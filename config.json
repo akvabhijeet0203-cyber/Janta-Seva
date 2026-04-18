@@ -1,0 +1,70 @@
+{
+  "model_type": "LogisticRegression",
+  "embedding_model": "paraphrase-mpnet-base-v2",
+  "embedding_dim": 768,
+  "num_classes": 31,
+  "classes": [
+    "Advertisement",
+    "BBMP Election Branch",
+    "CORONA COVID19",
+    "Call Center",
+    "E khata / Khata services",
+    "Education",
+    "Electrical",
+    "Estate",
+    "Forest",
+    "Health Dept",
+    "Indira Canteen",
+    "Information Technology",
+    "Lakes",
+    "Markets",
+    "Optical Fiber Cables (OFC)",
+    "Others",
+    "Parks and Play grounds",
+    "Plastic",
+    "Projects Central",
+    "Property Tax services",
+    "Revenue Department",
+    "Road Infrastructure",
+    "Road Maintenance(Engg)",
+    "Sanitation",
+    "Solid Waste (Garbage) Related",
+    "Storm  Water Drain(SWD)",
+    "Town Planning",
+    "Traffic Engineer Cell (TEC)",
+    "Water Crisis",
+    "Welfare Schemes",
+    "veterinary"
+  ],
+  "priority_thresholds": {
+    "CRITICAL": 7,
+    "HIGH": 5,
+    "MEDIUM": 3,
+    "LOW": 0
+  },
+  "urgent_keywords": [
+    "urgent",
+    "emergency",
+    "broken",
+    "dangerous",
+    "not working",
+    "very bad",
+    "terrible",
+    "disgusting",
+    "angry",
+    "frustrated"
+  ],
+  "emotion_weights": {
+    "emotion_score_multiplier": 2,
+    "age_score_max": 3,
+    "urgent_keyword_boost": 1
+  },
+  "training_date": "2026-04-18 08:01:51",
+  "framework": "scikit-learn",
+  "dependencies": [
+    "sentence-transformers>=2.0.0",
+    "scikit-learn>=1.0.0",
+    "textblob>=0.15.0",
+    "numpy>=1.19.0"
+  ]
+}

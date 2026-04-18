@@ -1,0 +1,501 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #1a1a1a;
+    --muted: #5a5a5a;
+    --faint: #e8e4dc;
+    --accent: #b85c2a;
+    --accent2: #2a6b8a;
+    --bg: #faf8f4;
+    --card: #ffffff;
+    --mono: 'JetBrains Mono', monospace;
+    --serif: 'Lora', Georgia, serif;
+    --display: 'Syne', sans-serif;
+  }
+  body {
+    font-family: var(--serif);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.8;
+    padding: 0;
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  .cover {
+    background: var(--ink);
+    color: #f0ebe1;
+    padding: 3.5rem 3rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 260px; height: 260px;
+    border: 2px solid rgba(184,92,42,0.35);
+    border-radius: 50%;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: -40px;
+    width: 160px; height: 160px;
+    border: 1.5px solid rgba(42,107,138,0.3);
+    border-radius: 50%;
+  }
+  .cover-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+  }
+  .cover h1 {
+    font-family: var(--display);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+  .cover h1 span { color: var(--accent); }
+  .cover-sub {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: #c8c0b0;
+    max-width: 500px;
+    margin-bottom: 2rem;
+  }
+  .cover-meta {
+    display: flex; gap: 2rem; flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: #8a8070;
+  }
+  .cover-meta span { color: #c8c0b0; }
+
+  .toc {
+    border-bottom: 1px solid var(--faint);
+    padding: 1.5rem 3rem;
+    background: #f4f1eb;
+  }
+  .toc-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+  .toc-list {
+    list-style: none;
+    display: flex; gap: 0; flex-direction: column;
+  }
+  .toc-list li {
+    display: flex; align-items: baseline; gap: 0.5rem;
+    font-family: var(--serif);
+    font-size: 0.9rem;
+    color: var(--muted);
+    padding: 2px 0;
+  }
+  .toc-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    min-width: 20px;
+  }
+
+  .body-content {
+    padding: 0 3rem 4rem;
+  }
+
+  .section {
+    margin-top: 3rem;
+  }
+  .section-header {
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--faint);
+  }
+  .section-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  .section h2 {
+    font-family: var(--display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    font-size: 1rem;
+    margin-bottom: 1.1rem;
+    color: var(--ink);
+  }
+  em { font-style: italic; }
+  strong { font-weight: 600; }
+
+  .pullquote {
+    border-left: 3px solid var(--accent);
+    padding: 0.6rem 1.25rem;
+    margin: 1.8rem 0;
+    background: #fdf8f3;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: #3a2a1a;
+  }
+  .pullquote cite {
+    display: block;
+    margin-top: 0.5rem;
+    font-style: normal;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+  }
+
+  .math-block {
+    background: #f0ede8;
+    border: 1px solid var(--faint);
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+  }
+  .math-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent2);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+
+  .pipeline {
+    display: flex; align-items: stretch; gap: 0;
+    margin: 2rem 0;
+    overflow-x: auto;
+  }
+  .pipe-step {
+    flex: 1; min-width: 90px;
+    background: var(--card);
+    border: 1px solid var(--faint);
+    padding: 0.9rem 0.7rem;
+    text-align: center;
+    position: relative;
+  }
+  .pipe-step:first-child { border-radius: 6px 0 0 6px; }
+  .pipe-step:last-child { border-radius: 0 6px 6px 0; }
+  .pipe-step:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -11px;
+    top: 50%; transform: translateY(-50%);
+    color: var(--accent);
+    font-size: 14px;
+    z-index: 1;
+    background: var(--bg);
+    padding: 0 1px;
+  }
+  .pipe-icon {
+    font-size: 18px;
+    margin-bottom: 5px;
+    display: block;
+  }
+  .pipe-name {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+  }
+
+  .challenge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .challenge-card {
+    background: var(--card);
+    border: 1px solid var(--faint);
+    border-radius: 8px;
+    padding: 1rem 1.1rem;
+  }
+  .challenge-card .c-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .c-label.problem { color: #a33; }
+  .c-label.solution { color: var(--accent2); }
+  .challenge-card p {
+    font-size: 0.88rem;
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .learned-list {
+    list-style: none;
+    margin: 1.2rem 0;
+  }
+  .learned-list li {
+    display: flex; gap: 0.75rem; align-items: flex-start;
+    font-size: 0.97rem;
+    margin-bottom: 0.7rem;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+  .learned-list li::before {
+    content: '◆';
+    color: var(--accent);
+    font-size: 8px;
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+
+  .closing {
+    margin-top: 3rem;
+    padding: 2rem 2.5rem;
+    background: var(--ink);
+    border-radius: 8px;
+    color: #f0ebe1;
+    text-align: center;
+  }
+  .closing p {
+    color: #c8bfb0;
+    font-style: italic;
+    font-size: 1rem;
+    margin-bottom: 0;
+  }
+  .closing .big-word {
+    font-family: var(--display);
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .divider {
+    text-align: center;
+    color: var(--faint);
+    font-size: 1.4rem;
+    letter-spacing: 0.4em;
+    margin: 1rem 0;
+  }
+
+  @media (max-width: 600px) {
+    .cover, .toc, .body-content { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .pipeline { flex-direction: column; }
+    .pipe-step::after { display: none; }
+    .pipe-step { border-radius: 6px; margin-bottom: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-tag">Project Submission — Civic Tech Hackathon</div>
+  <h1>The <span>Smart</span><br>Complaint Categorizer</h1>
+  <p class="cover-sub">A multi-modal AI system that listens to citizens, understands urgency, and routes problems before they become crises.</p>
+  <div class="cover-meta">
+    <div>Category <span>AI / Public Services</span></div>
+    <div>Stack <span>NLP · CV · REST API</span></div>
+    <div>Mode <span>Text + Image Input</span></div>
+  </div>
+</div>
+
+<div class="toc">
+  <div class="toc-title">Contents</div>
+  <ul class="toc-list">
+    <li><span class="toc-num">01</span> The Spark — What Inspired This</li>
+    <li><span class="toc-num">02</span> The Build — Architecture & Workflow</li>
+    <li><span class="toc-num">03</span> The Math — How Priority Is Scored</li>
+    <li><span class="toc-num">04</span> The Challenges — What We Fought</li>
+    <li><span class="toc-num">05</span> The Lessons — What We Learned</li>
+  </ul>
+</div>
+
+<div class="body-content">
+
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">01 — Inspiration</span>
+      <h2>The Spark</h2>
+    </div>
+    <p>It started with a photograph — a burst water main flooding a street in the early hours, posted on a neighborhood chat group. The image circulated for six hours. Residents tagged local officials. Officials asked residents to "please use the official portal." The portal required a category selection. Nobody could agree whether a burst pipe was a <em>water</em> issue or a <em>roads</em> issue. The complaint sat, uncategorized, in a digital limbo.</p>
+
+    <div class="pullquote">
+      The system failed not because people didn't care — it failed because the bridge between a citizen's lived experience and the right department desk was never built.
+      <cite>— the problem we set out to solve</cite>
+    </div>
+
+    <p>We kept returning to a single question: <em>why does a human being need to manually read thousands of complaints, guess their urgency, and forward them to the right team?</em> Every minute spent triaging is a minute not spent fixing. In dense cities where water boards, electricity companies, road authorities, and sanitation departments each guard their own inbox, a complaint can bounce for days before anyone acts. We wanted to build that missing bridge — fast, accurate, and invisible to the citizen filing it.</p>
+
+    <p>The inspiration wasn't purely technical. It was the quiet frustration of a grandmother photographing a cracked footpath outside her building for the third time in a year, uncertain whether her complaint had ever been read. That image stayed with us through every sprint.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">02 — Architecture</span>
+      <h2>How We Built It</h2>
+    </div>
+
+    <p>The system accepts complaints as <strong>text</strong>, <strong>images</strong>, or both. It passes each submission through a lightweight two-branch pipeline that runs in parallel before a fusion layer merges the signals and produces a department classification plus a priority score.</p>
+
+    <div class="pipeline" id="pipeline">
+      <div class="pipe-step"><span class="pipe-icon">📝</span><div class="pipe-name">Citizen Input (text / image)</div></div>
+      <div class="pipe-step"><span class="pipe-icon">🔤</span><div class="pipe-name">NLP Branch (TF-IDF + intent)</div></div>
+      <div class="pipe-step"><span class="pipe-icon">🖼️</span><div class="pipe-name">Vision Branch (CNN classifier)</div></div>
+      <div class="pipe-step"><span class="pipe-icon">⚖️</span><div class="pipe-name">Fusion Layer (weighted merge)</div></div>
+      <div class="pipe-step"><span class="pipe-icon">🏷️</span><div class="pipe-name">Department + Priority Output</div></div>
+    </div>
+
+    <p>The <strong>NLP branch</strong> tokenizes the complaint text, applies a TF-IDF vectorizer trained on a labeled corpus of civic complaints (water, electricity, roads, sanitation), and passes the result into a logistic regression classifier. Keyword signals like <em>"pipe burst," "blackout," "pothole,"</em> or <em>"garbage overflow"</em> anchor the classification before any contextual layer runs. For ambiguous complaints, a lightweight BERT-based intent detector resolves department overlap.</p>
+
+    <p>The <strong>vision branch</strong> accepts an attached photograph and runs it through a fine-tuned MobileNetV2 model, chosen specifically for its inference speed on CPU. The model was fine-tuned on scraped images of civic infrastructure defects across four classes matching our department taxonomy. A confidence threshold gate (<code>τ = 0.62</code>) ensures low-confidence image signals don't override strong text signals.</p>
+
+    <p>The <strong>fusion layer</strong> applies a weighted combination. When both signals are present, text confidence and image confidence are merged using a learned mixing weight <code>α</code>. When only one modality is submitted, the system falls back to that branch alone — no complaint is ever rejected for being incomplete.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">03 — The Math</span>
+      <h2>Scoring Priority</h2>
+    </div>
+
+    <p>Not every complaint is equal urgency. A slow drain and a burst main both belong to the <em>water</em> department, but one demands a same-hour response and the other does not. We formalized priority as a real-valued score <em>P</em> computed per complaint.</p>
+
+    <div class="math-block">
+      <div class="math-label">Priority Score Definition</div>
+      <div id="eq1"></div>
+    </div>
+
+    <p>Where <strong>C</strong> is the department classification confidence (0–1), <strong>U</strong> is an urgency keyword score extracted from the complaint text, <strong>R</strong> is a recurrence bonus (complaints about the same location filed multiple times in 30 days get boosted), and <strong>λ</strong> is a regularization factor to prevent runaway scores from noisy data.</p>
+
+    <div class="math-block">
+      <div class="math-label">Urgency Keyword Score</div>
+      <div id="eq2"></div>
+    </div>
+
+    <p>Urgency keywords <em>kᵢ</em> are drawn from a manually curated lexicon (e.g., <em>"flooding," "no power," "raw sewage," "collapse"</em>) each with a hand-tuned weight <em>wᵢ</em>. The sigmoid squashes the linear sum into a bounded 0–1 range, giving the model graceful behavior on edge-case inputs.</p>
+
+    <div class="math-block">
+      <div class="math-label">Fusion Weight (when both modalities present)</div>
+      <div id="eq3"></div>
+    </div>
+
+    <p>The final department label is: <em>argmax</em> over the fused class probabilities. Priority <em>P</em> maps to three tiers — <strong>Critical (&gt; 0.75)</strong>, <strong>High (0.45–0.75)</strong>, and <strong>Standard (&lt; 0.45)</strong> — which route to different SLA queues in the backend.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">04 — Challenges</span>
+      <h2>What We Fought</h2>
+    </div>
+
+    <p>Building a prototype in a constrained timeline meant confronting real problems fast. Here are the four that defined our development arc:</p>
+
+    <div class="challenge-grid">
+      <div class="challenge-card">
+        <div class="c-label problem">Challenge</div>
+        <p>Ambiguous complaints span multiple departments — a flooded road is both <em>water</em> and <em>roads</em>.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="c-label solution">Solution</div>
+        <p>Introduced a multi-label soft-assignment step; primary department is the top-1 class, secondary is flagged if confidence is within 0.15 of primary.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="c-label problem">Challenge</div>
+        <p>Labeled civic image datasets are almost nonexistent for Indian infrastructure contexts.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="c-label solution">Solution</div>
+        <p>Scraped, manually tagged, and augmented a 2,400-image dataset using rotation, blur, and brightness jitter to simulate field photo conditions.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="c-label problem">Challenge</div>
+        <p>Citizens write complaints in mixed-language (Hinglish) text that breaks standard tokenizers.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="c-label solution">Solution</div>
+        <p>Integrated IndicNLP preprocessing with a transliteration fallback, preserving keyword signals even when formal Hindi script is absent.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="c-label problem">Challenge</div>
+        <p>Real-time latency — the vision branch added 800 ms on CPU, too slow for a live UX.</p>
+      </div>
+      <div class="challenge-card">
+        <div class="c-label solution">Solution</div>
+        <p>Switched from ResNet50 to MobileNetV2, applied quantization (INT8), and moved image preprocessing to async; total pipeline now runs in under 300 ms.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <span class="section-num">05 — Lessons</span>
+      <h2>What We Learned</h2>
+    </div>
+
+    <ul class="learned-list">
+      <li><strong>Data quality beats model complexity.</strong> Early iterations used a larger BERT model with a messy dataset and performed worse than a logistic regression trained on a carefully cleaned one. Garbage in, garbage out is not a cliché — it's a hard constraint.</li>
+      <li><strong>Context is a design decision, not a technical one.</strong> Deciding what "urgency" means — whose definition, which lexicon, which thresholds — required conversations with people who understand civic governance, not just machine learning. The most important meetings we had were with a retired municipal engineer.</li>
+      <li><strong>Multi-modal fusion is not addition.</strong> Simply concatenating text and image features made things worse. We learned that modalities must be weighted by their relative reliability per input, not combined naively. Trust the signal that is more confident, not the one that arrived first.</li>
+      <li><strong>Latency is a civic equity issue.</strong> A system that takes three seconds to respond feels broken on a 2G connection. Optimizing for inference speed wasn't a nice-to-have — it was a prerequisite for this to be usable by the citizens who need it most.</li>
+      <li><strong>Explainability matters more than accuracy.</strong> A 91% accurate black-box will not be adopted by a government department. Building a simple keyword-highlight explanation of <em>why</em> a complaint was classified a certain way took two extra days and made the system ten times more trustworthy in user testing.</li>
+    </ul>
+
+    <div class="divider">· · ·</div>
+
+    <p>The prototype we built is imperfect — the dataset is small, the fusion weights are hand-tuned rather than learned end-to-end, and we have not yet tested at scale. But it demonstrates something real: <strong>the gap between a citizen filing a complaint and the right person reading it can be closed by a few hundred milliseconds of intelligent computation.</strong> That gap, multiplied across millions of complaints per year, is where civic trust is quietly eroded. We wanted to start closing it.</p>
+  </div>
+
+  <div class="closing">
+    <span class="big-word">Smarter Cities Begin With Listening.</span>
+    <p>Every complaint is a citizen reaching out. This system ensures they are always heard — by the right person, at the right priority, in real time.</p>
+  </div>
+
+</div>
+
+<script>
+  katex.render(
+    "P = \\frac{C \\cdot U \\cdot (1 + R)}{1 + \\lambda \\cdot \\|w\\|^2}",
+    document.getElementById("eq1"),
+    { displayMode: true, throwOnError: false }
+  );
+  katex.render(
+    "U = \\sigma\\!\\left(\\sum_{i=1}^{n} w_i \\cdot \\mathbf{1}[k_i \\in \\text{complaint}]\\right), \\quad \\sigma(x) = \\frac{1}{1+e^{-x}}",
+    document.getElementById("eq2"),
+    { displayMode: true, throwOnError: false }
+  );
+  katex.render(
+    "\\hat{y} = \\alpha \\cdot p_{\\text{text}} + (1-\\alpha) \\cdot p_{\\text{image}}, \\quad \\alpha = \\frac{c_{\\text{text}}}{c_{\\text{text}} + c_{\\text{image}}}",
+    document.getElementById("eq3"),
+    { displayMode: true, throwOnError: false }
+  );
+</script>
+</body>
+</html>
